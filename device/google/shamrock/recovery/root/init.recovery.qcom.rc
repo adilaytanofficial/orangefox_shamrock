@@ -1,0 +1,20 @@
+on early-boot
+    rm /dev/input/event1
+
+on fs
+    wait /dev/block/platform/soc.0/7824900.sdhci
+    symlink /dev/block/platform/soc.0/7824900.sdhci /dev/block/bootdevice
+    
+    install_keyring
+    setprop ro.hardware.bootctrl msm8952
+    start sbinqseecomd
+
+on boot
+    chmod 0000 /dev/input/event1
+
+service sbinqseecomd /sbin/qseecomd
+    oneshot
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
