@@ -1,0 +1,34 @@
+#
+# Shamrock (GM 5 Plus) - OrangeFox 12.1 Custom Recovery Props
+#
+
+# System Security & Root Enforcement
+ro.secure=0
+ro.allow.mock.location=0
+ro.debuggable=1
+ro.adb.secure=0
+security.perf_harden=0
+
+# USB Daemon & Connection Control (MTP + ADB Kombinasyonu)
+persist.sys.usb.config=mtp,adb
+sys.usb.config=mtp,adb
+sys.usb.state=mtp,adb
+persist.service.adb.enable=1
+persist.service.debugmain=1
+
+# Target Device & Product Identifiers
+ro.product.model=GM 5 Plus
+ro.product.brand=General Mobile
+ro.product.name=fox_shamrock
+ro.product.device=shamrock
+ro.product.board=MSM8952
+ro.board.platform=msm8952
+ro.vendor.product.manufacturer=General Mobile
+ro.vendor.product.model=GM 5 Plus
+ro.vendor.product.brand=General Mobile
+ro.vendor.product.name=fox_shamrock
+ro.vendor.product.device=shamrock
+
+# Treble & Legacy Partition Overrides
+ro.treble.enabled=false
+persist.sys.disable_rescue=true

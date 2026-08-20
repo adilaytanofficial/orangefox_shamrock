@@ -1,0 +1,23 @@
+#!/sbin/sh
+
+case "$1" in
+    *recovery*)
+        printf "boot-recovery\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0" | dd of=/dev/block/bootdevice/by-name/misc bs=1 seek=0 conv=notrunc >/dev/null 2>&1
+        sync
+        echo 1 > /proc/sys/kernel/sysrq
+        echo b > /proc/sysrq-trigger
+        ;;
+    *bootloader*|*fastboot*)
+        dd if=/dev/zero of=/dev/block/bootdevice/by-name/misc bs=1 count=64 seek=0 conv=notrunc >/dev/null 2>&1
+        sync
+        write /sys/module/msm_poweroff/parameters/download_mode 0 2>/dev/null
+        echo "bootloader" > /sys/module/restart/parameters/download_mode 2>/dev/null
+        /system/bin/reboot bootloader || /sbin/reboot bootloader
+        ;;
+    *)
+        dd if=/dev/zero of=/dev/block/bootdevice/by-name/misc bs=1 count=64 seek=0 conv=notrunc >/dev/null 2>&1
+        sync
+        echo 1 > /proc/sys/kernel/sysrq
+        echo b > /proc/sysrq-trigger
+        ;;
+esac

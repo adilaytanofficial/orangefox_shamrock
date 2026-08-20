@@ -3,7 +3,7 @@ LOCAL_PATH := device/google/shamrock
 # Platform
 TARGET_BOARD_PLATFORM := msm8952
 TARGET_BOOTLOADER_BOARD_NAME := MSM8952
-TARGET_NO_BOOTLOADER := true
+TARGET_NO_BOOTLOADER := false
 TARGET_OTA_ASSERT_DEVICE := shamrock,GM5Plus,GM5_Plus,gm5plus
 
 # Architecture
@@ -28,19 +28,40 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BACKLIGHT_PATH := /sys/class/leds/lcd-backlight/brightness
 
-# Crypto
+# Crypto & Encryption Control
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TARGET_HW_DISK_ENCRYPTION := false
+TW_INCLUDE_CRYPTO := false
+TW_INCLUDE_CRYPTO_FKEY := false
 
-# Kernel
+# Kernel & Boot Image Parametreleri
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=tty60,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 cma=16M@0-0xffffffff androidboot.selinux=permissive androidboot.secure=0
-BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_OFFSET := 0x00008000
+
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk androidboot.selinux=permissive buildvariant=userdebug
+#BOARD_KERNEL_CMDLINE += androidboot.reboot_reason=recovery
+BOARD_KERNEL_CMDLINE += androidboot.mode=recovery
+
+# Prebuilt Kernel & DTB
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_KERNEL_SEPARATED_DT := false
+
+# Mkbootimg Argümanları
+BOARD_MKBOOTIMG_ARGS := --kernel_offset $(BOARD_KERNEL_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --header_version 0
+
+BOARD_INCLUDE_DTB_IN_BOOTIMG := false
+TARGET_NEEDS_DTB := false
+BOARD_PREBUILT_DTBIMAGE := $(LOCAL_PATH)/prebuilt/dtb.img
+
+# Sideload ve USB Bağlantı Tespiti (Qualcomm MSM8952 Fix)
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun%d/file"
+TW_HAS_MTP := true
 
 # Filesystem & Partition Sizes
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
@@ -52,7 +73,6 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 24792731648
 BOARD_VENDORIMAGE_PARTITION_SIZE := 524083200
 
 TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USES_MKE2FS := true
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -66,9 +86,8 @@ PRODUCT_FULL_TREBLE_OVERRIDE := false
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_USES_VENDORIMAGE := true
 
-#Display Configuration
+# Display Configuration
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
-TARGET_RECOVERY_QCOM_RTC_FIX := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
 BOARD_SUPPRESS_SECURE_ERASE := true
@@ -78,7 +97,71 @@ TARGET_SCREEN_WIDTH := 1080
 TARGET_SCREEN_HEIGHT := 1920
 RECOVERY_GRAPHICS_USE_HEADER_SCALING := true
 
+# ADB & Security
 ALLOW_MISSING_DEPENDENCIES := true
-RECOVERY_SDCARD_ON_DATA := true
 ALLOW_ADBD_DISABLE_VERIFICATION := true
 PERSISTENT_ADB := true
+TARGET_USES_LOGD := false
+BOARD_AVB_ENABLE := false
+
+# Root ADB Ayarları (ADB'nin offline düşmesini engeller)
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.adb.secure=0 \
+    ro.secure=0 \
+    ro.debuggable=1 \
+    persist.sys.usb.config=mtp,adb
+
+# OrangeFox & Build System Optimizations
+FOX_ARCH := arm64
+PLATFORM_SECURITY_PATCH := 2021-06-05
+PLATFORM_VERSION := 10.0.0
+
+OF_DISABLE_MIUI_SPECIFIC_SUPPORTS := 1
+OF_QUICK_BACKUP_LIST := /boot;/data;/system;/vendor;
+
+# Custom Vendor & Recovery Props
+TARGET_RECOVERY_DEVICE_DIRS += device/google/shamrock
+TARGET_PROP := device/google/shamrock/prop.default
+
+BUILD_WITH_COLORS := true
+
+# Qualcomm legacy cihazlar için FunctionFS ve USB Çakışma Önleme
+TARGET_RECOVERY_UNKNOWN_PARENTS := true
+TW_EXCLUDE_DEFAULTUSB_INIT := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+
+# ADB / USB FunctionFS tanımları
+GLOBAL_CFLAGS += -DALLOW_DISABLE_SELINUX=1
+
+PRODUCT_BUILD_LICENSE_METADATA := false
+
+# ====================================================================
+# Reboot & Recovery Action Fix (Qualcomm MSM8952 / Shamrock)
+# ====================================================================
+BOARD_RECOVERY_BLDRMSG_OFFSET := 0
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+
+# Reboot Butonları Düzeltmesi (Bootloader Menüsünü Aktif Eder)
+TW_NO_REBOOT_BOOTLOADER := false
+TW_NO_REBOOT_RECOVERY := false
+TW_HAS_DOWNLOAD_MODE := false
+
+# Executable, Shell & Resetprop Yetki Tanımları
+TW_INCLUDE_LIBRESETPROP := true
+TW_USE_TOOLBOX := true
+RECOVERY_BINARY_SOURCE := 67
+
+# Storage Configuration
+BOARD_HAS_NO_REAL_SDCARD := true
+RECOVERY_SDCARD_ON_DATA := true
+
+# Zip / Binary ve Bootloader kütüphaneleri
+TARGET_RECOVERY_DEVICE_MODULES += timestamp
+TARGET_RECOVERY_UPDATER_LIBS += libcutils libselinux libbootloader_message
+#BOARD_SEPOLICY_DIRS += device/google/shamrock/sepolicy
+#SELINUX_IGNORE_NEVERALLOWS := true
+
+# OrangeFox / TWRP /misc Otomatik Temizleme
+TW_CLEAN_BOOTLOADER_MESSAGE := true
+TARGET_RECOVERY_DEVICE_HAVE_MISC_PARTITION := true
+TW_TARGET_MISC_PATH := /dev/block/bootdevice/by-name/misc
