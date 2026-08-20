@@ -6,7 +6,6 @@ Thanks to: <b>yigit.yanik</b> and <b>kaanyigitkulahli</b> for device tree source
 * Twrp Tree: https://github.com/TeamWin/android_device_google_shamrock
 
 ## Current Issues
-* Restore
 * Data decryption
 * Flashlight
 
