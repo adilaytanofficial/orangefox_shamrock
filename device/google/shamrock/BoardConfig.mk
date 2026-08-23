@@ -29,10 +29,10 @@ BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BACKLIGHT_PATH := /sys/class/leds/lcd-backlight/brightness
 
 # Crypto & Encryption Control
-TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FKEY := true
 TARGET_HW_DISK_ENCRYPTION := false
-TW_INCLUDE_CRYPTO := false
-TW_INCLUDE_CRYPTO_FKEY := false
+TW_LEGACY_DECRYPT := true
 
 # Kernel & Boot Image Parametreleri
 BOARD_KERNEL_BASE := 0x80000000
@@ -41,9 +41,11 @@ BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_OFFSET := 0x00008000
 
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk androidboot.selinux=permissive buildvariant=userdebug
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk buildvariant=userdebug
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+TW_ALWAYS_PERMISSIVE := true
 #BOARD_KERNEL_CMDLINE += androidboot.reboot_reason=recovery
-BOARD_KERNEL_CMDLINE += androidboot.mode=recovery
+#BOARD_KERNEL_CMDLINE += androidboot.mode=recovery
 
 # Prebuilt Kernel & DTB
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
@@ -80,7 +82,7 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Legacy Partition Non-Treble Fix
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := false
 PRODUCT_FULL_TREBLE_OVERRIDE := false
 TARGET_COPY_OUT_VENDOR := vendor
@@ -158,10 +160,29 @@ RECOVERY_SDCARD_ON_DATA := true
 # Zip / Binary ve Bootloader kütüphaneleri
 TARGET_RECOVERY_DEVICE_MODULES += timestamp
 TARGET_RECOVERY_UPDATER_LIBS += libcutils libselinux libbootloader_message
-#BOARD_SEPOLICY_DIRS += device/google/shamrock/sepolicy
-#SELINUX_IGNORE_NEVERALLOWS := true
 
 # OrangeFox / TWRP /misc Otomatik Temizleme
 TW_CLEAN_BOOTLOADER_MESSAGE := true
 TARGET_RECOVERY_DEVICE_HAVE_MISC_PARTITION := true
 TW_TARGET_MISC_PATH := /dev/block/bootdevice/by-name/misc
+
+# TORCH
+OF_FLASHLIGHT_ENABLE := 1
+OF_FL_PATH1 := /sys/class/leds/led:torch_0
+OF_FL_PATH2 := /sys/class/leds/led:switch
+OF_MAX_BRIGHTNESS := 120
+
+TARGET_RECOVERY_DEVICE_MODULES += \
+    lights.msm8952 \
+    android.hardware.light@2.0-service
+
+# OrangeFox SAR ve Partition Tanımları (EKLENMELİ)
+OF_USE_GREEN_FIX := true
+OF_SYSTEM_AS_ROOT := true
+OF_STATUS_INDENT := 0
+TW_HAS_SYSTEM_ROOT := true
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_REPACKTOOLS := true
+OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := 1
+OF_DISABLE_MIUI_SPECIFIC_FEATURES := 1
+OF_HAS_SYSTEM_ROOT := 1

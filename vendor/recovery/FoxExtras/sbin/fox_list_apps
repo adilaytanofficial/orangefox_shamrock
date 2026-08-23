@@ -1,0 +1,69 @@
+#!/system/bin/sh
+#
+# Custom script for OrangeFox TWRP Recovery
+#
+
+is_mounted() {
+  [ -z "$1" ] && { echo "0"; return; }
+  grep -q " `readlink -f $1` " /proc/mounts 2>/dev/null
+  [ "$?" = "1" ] && echo "0" || echo "1"
+}
+
+Do_Get_List() {
+local AAPT1="/sbin/aapt"
+local AAPT2="/sbin/aapt2"
+local tmp="/tmp/listapps"
+local list="$tmp/list"
+local namestr="application-label:'"
+
+    rm -rf "$tmp"
+    mkdir -p "$tmp" "$list"
+
+    [ "$(is_mounted "/data")" != "1" ] && mount /data
+    [ "$(is_mounted "/system")" != "1" ] && mount /system 2>/dev/null
+    [ "$(is_mounted "/system_root")" != "1" ] && mount /system_root 2>/dev/null
+
+    local target_dirs="/data/app /system/app /system/priv-app /system_root/system/app /system_root/system/priv-app"
+
+    if [ -f "$AAPT1" -o -f "$AAPT2" ]; then
+       AAPT="$AAPT1"
+       [ ! -f "$AAPT1" ] && AAPT="$AAPT2"
+       
+       for base_path in $(find $target_dirs -maxdepth 3 -name "*.apk" 2>/dev/null); do
+            fullpath=$(dirname "$base_path")
+            apk_name=$(basename "$base_path")
+            pkgname=$(echo "$apk_name" | sed 's/\.apk//')
+
+            name=$($AAPT dump badging "$base_path" 2>/dev/null | grep "$namestr" | sed "s/$namestr//" | sed "s/'//g")
+            
+            [ -z "$name" ] && name="$pkgname"
+
+            if [ -f "$list/$name" ]; then
+                echo "$fullpath" > "$list/$name ($pkgname)"
+            else
+                echo "$fullpath" > "$list/$name"
+            fi
+       done
+    else
+       for base_path in $(find $target_dirs -maxdepth 3 -name "*.apk" 2>/dev/null); do
+            fullpath=$(dirname "$base_path")
+            apk_name=$(basename "$base_path")
+            pkgname=$(echo "$apk_name" | sed 's/\.apk//')
+            
+            echo "$fullpath" > "$list/$pkgname"
+       done
+    fi
+
+    exit 0
+}
+
+Do_Cleanup() {
+  rm -rf /tmp/listapps
+  exit 0
+}
+
+if [ "$1" = "--cleanup" ]; then
+   Do_Cleanup
+else
+   Do_Get_List
+fi

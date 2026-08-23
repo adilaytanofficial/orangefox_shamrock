@@ -11,6 +11,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/ueventd.qcom.rc:recovery/root/ueventd.qcom.rc \
     $(LOCAL_PATH)/recovery/root/sbin/reboot:recovery/root/sbin/reboot
 
+# Custom Theme & Zip Post-Install Script
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/theme/theme_install.sh:recovery/root/FFiles/OF_default_theme/theme_install.sh \
+    $(LOCAL_PATH)/recovery/root/theme/theme/accent.xml:recovery/root/FFiles/OF_default_theme/theme/accent.xml \
+    $(LOCAL_PATH)/recovery/root/theme/theme/style.xml:recovery/root/FFiles/OF_default_theme/theme/style.xml \
+    $(LOCAL_PATH)/recovery/root/theme/theme/foxs:recovery/root/FFiles/OF_default_theme/theme/foxs
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
     ro.secure=0 \

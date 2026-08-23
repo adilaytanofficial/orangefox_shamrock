@@ -1,4 +1,8 @@
 on init
+    mkdir /dev/cpuset
+    mount cgroup none /dev/cpuset cpuset
+    mkdir /dev/cpuset/foreground
+    write /dev/cpuset/foreground/boost/tasks 0
     chmod 0755 /sbin/reboot
 
 on early-boot
@@ -7,14 +11,34 @@ on early-boot
 on fs
     wait /dev/block/platform/soc.0/7824900.sdhci
     symlink /dev/block/platform/soc.0/7824900.sdhci /dev/block/bootdevice
-    
-    install_keyring
+    wait /dev/block/bootdevice/by-name/misc
     setprop ro.hardware.bootctrl msm8952
     start sbinqseecomd
 
 on boot
     chmod 0000 /dev/input/event1
-    exec u:r:init:s0 -- /sbin/sh -c "dd if=/dev/zero of=/dev/block/bootdevice/by-name/misc bs=1 count=64 seek=0 conv=notrunc >/dev/null 2>&1 && sync"
+    exec_background u:r:recovery:s0 -- /system/bin/sh -c "dd if=/dev/zero of=/dev/block/bootdevice/by-name/misc bs=1 count=64 seek=0 conv=notrunc >/dev/null 2>&1 && sync"
+    chown system system /sys/class/leds/led:torch_0/brightness
+    chown system system /sys/class/leds/led:torch_0/max_brightness
+    chown system system /sys/class/leds/led:switch/brightness
+    chown system system /sys/class/leds/led:switch/max_brightness
+    chmod 0666 /sys/class/leds/led:torch_0/brightness
+    chmod 0666 /sys/class/leds/led:torch_0/max_brightness
+    chmod 0666 /sys/class/leds/led:switch/brightness
+    chmod 0666 /sys/class/leds/led:switch/max_brightness
+    chown system system /sys/class/leds/green/brightness
+    chmod 0664 /sys/class/leds/green/brightness
+    chown system system /sys/class/leds/charging/brightness
+    chmod 0664 /sys/class/leds/charging/brightness
+    write /sys/class/leds/led:torch_0/max_brightness 120
+    write /sys/class/leds/led:switch/max_brightness 1
+
+service keystore2 /system/bin/keystore2 /data/misc/keystore
+    class main
+    user keystore
+    group keystore readproc log
+    disabled
+    override
 
 service sbinqseecomd /system/bin/qseecomd
     class core
@@ -22,7 +46,7 @@ service sbinqseecomd /system/bin/qseecomd
     group root drmrpc
     disabled
     oneshot
-    seclabel u:r:init:s0
+    seclabel u:r:recovery:s0
 
 on property:sys.powerctl=*
-    exec u:r:init:s0 -- /sbin/reboot ${sys.powerctl}
+    exec u:r:recovery:s0 -- /sbin/reboot ${sys.powerctl}
