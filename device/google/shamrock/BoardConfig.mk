@@ -177,7 +177,9 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     android.hardware.light@2.0-service
 
 # OrangeFox SAR ve Partition Tanımları (EKLENMELİ)
-OF_USE_GREEN_FIX := true
+TW_CUSTOM_BATTERY_PATH := "/sys/class/power_supply/battery"
+CUSTOM_SYSFS_LEDS_PATH := "/sys/class/leds/green"
+OF_USE_GREEN_LED := 0
 OF_SYSTEM_AS_ROOT := true
 OF_STATUS_INDENT := 0
 TW_HAS_SYSTEM_ROOT := true
@@ -186,3 +188,5 @@ TW_INCLUDE_REPACKTOOLS := true
 OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := 1
 OF_DISABLE_MIUI_SPECIFIC_FEATURES := 1
 OF_HAS_SYSTEM_ROOT := 1
+TW_EXCLUDE_SUPERSU := true
+TW_MAX_BRIGHTNESS := 255

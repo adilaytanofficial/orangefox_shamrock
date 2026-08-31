@@ -9,7 +9,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:recovery/root/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:recovery/root/init.recovery.usb.rc \
     $(LOCAL_PATH)/recovery/root/ueventd.qcom.rc:recovery/root/ueventd.qcom.rc \
-    $(LOCAL_PATH)/recovery/root/sbin/reboot:recovery/root/sbin/reboot
+    $(LOCAL_PATH)/recovery/root/sbin/reboot:recovery/root/sbin/reboot \
+    $(LOCAL_PATH)/recovery/root/sbin/usb_led_monitor:recovery/root/sbin/usb_led_monitor
 
 # Custom Theme & Zip Post-Install Script
 PRODUCT_COPY_FILES += \
@@ -22,4 +23,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
     ro.secure=0 \
     ro.debuggable=1 \
-    persist.sys.usb.config=mtp,adb
+    persist.sys.usb.config=adb

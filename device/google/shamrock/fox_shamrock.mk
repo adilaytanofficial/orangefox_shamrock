@@ -19,14 +19,11 @@ TW_THEME := portrait_hdpi
 TW_INCLUDE_FUSE_EXFAT := true
 TW_INCLUDE_FUSE_NTFS := true
 TW_INCLUDE_NTFS_3G := true
-TW_MAX_BRIGHTNESS := 200
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
-TW_EXCLUDE_SUPERSU := true
 TW_EXCLUDE_TWRPAPP := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_HAS_NO_REAL_SDCARD := true
 TW_INPUT_BLACK_LIST := /dev/input/event1
-TW_CUSTOM_BATTERY_PATH := /sys/class/power_supply/battery
 TW_INCLUDE_MTP := 1
 
 # Maintainer Info
@@ -56,4 +53,3 @@ OF_INCLUDE_MAGISK := 1
 FOX_VANILLA_BUILD := 1
 OF_RUN_POST_FORMAT_PROCESS := 1
 OF_PATCH_AVB20 := 1
-OF_USE_GREEN_LED := 1

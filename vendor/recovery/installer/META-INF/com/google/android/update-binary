@@ -1067,11 +1067,7 @@ Main() {
 	   exit 0
 	fi
 
-	ui_print " >> Rebooting to OrangeFox Recovery in 5 seconds ..."
-	sleep 1
-	ui_print "-5s...."
-	sleep 1
-	ui_print "-4s...."
+	ui_print " >> Rebooting to OrangeFox Recovery in 3 seconds ..."
 	sleep 1
 	ui_print "-3s..."
 	sleep 1
@@ -1084,11 +1080,6 @@ Main() {
 	ui_print "- Rebooting to Recovery now ..."
 	sleep 1
 	reboot recovery
-
-	# if we reach here, then the reboot command failed
-	sleep 3
-	ui_print " "
-	ui_print "- Hmmm ... it seems that auto-reboot has failed. Please reboot to Recovery manually."
 	exit 0
 } # end Main(); 
 

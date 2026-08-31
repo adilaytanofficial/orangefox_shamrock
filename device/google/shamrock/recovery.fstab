@@ -1,8 +1,7 @@
 # Android fstab file for General Mobile 5 Plus (shamrock) - OrangeFox 12.1
-#
 # <mnt_point>    <type>    <device>                                    <flags>
 
-/system_root     ext4      /dev/block/bootdevice/by-name/system        flags=display="System";backup=1;wipeingui
+/system          ext4      /dev/block/bootdevice/by-name/system        flags=display="System";backup=1;wipeingui
 /data            ext4      /dev/block/bootdevice/by-name/userdata      flags=encryptable=footer;length=-16384;wipeingui
 /boot            emmc      /dev/block/bootdevice/by-name/boot          flags=display="Boot";backup=1;flashimg=1
 /cache           ext4      /dev/block/bootdevice/by-name/cache         flags=display="Cache"
@@ -34,7 +33,7 @@
 /sec             emmc      /dev/block/bootdevice/by-name/sec           flags=backup=1;display="Sec"
 
 # EFS (IMEI)
-/efs1            emmc      /dev/block/bootdevice/by-name/modemst1      flags=display="EFS";backup=1
-/efs2            emmc      /dev/block/bootdevice/by-name/modemst2      flags=backup=1;subpartitionof=/efs1
+/efs1            emmc      /dev/block/bootdevice/by-name/modemst1     flags=display="EFS";backup=1
+/efs2            emmc      /dev/block/bootdevice/by-name/modemst2     flags=backup=1;subpartitionof=/efs1
 /efsg            emmc      /dev/block/bootdevice/by-name/fsg          flags=backup=1;subpartitionof=/efs1
 /efsc            emmc      /dev/block/bootdevice/by-name/fsc          flags=backup=1;subpartitionof=/efs1
