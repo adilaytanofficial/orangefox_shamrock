@@ -9,7 +9,6 @@ A custom recovery project for Google Shamrock (GM5 Plus) based on OrangeFox.
 ## ⚙️ Features
 
 - Fast and stable recovery environment
-- Supports A/B devices
 - Built for Google Shamrock (GM5 Plus)
 - Based on the latest OrangeFox sources
 
