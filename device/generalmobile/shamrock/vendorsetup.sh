@@ -1,6 +1,6 @@
 export FOX_DELETE_AROMAFM=1
 export OF_FORCE_PREBUILT_KERNEL=1
-export FOX_USE_SPECIFIC_MAGISK_ZIP=$(pwd)/device/google/shamrock/prebuilt/Magisk.zip
+export FOX_USE_SPECIFIC_MAGISK_ZIP=$(pwd)/device/generalmobile/shamrock/prebuilt/Magisk.zip
 export FOX_MOVE_MAGISK_INSTALLER_TO_RAMDISK=1
 export FOX_ENABLE_APP_MANAGER=1
 export FOX_ASH_IS_BASH=1
@@ -15,3 +15,4 @@ export FOX_USE_ZSTD_BINARY=1
 export FOX_VANILLA_BUILD=1
 export FOX_ALLOW_EARLY_SETTINGS_LOAD=1
 export FOX_SETTINGS_ROOT_DIRECTORY=/sdcard
+export FOX_INTERNAL_RELEASE=R12.1

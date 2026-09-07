@@ -1,16 +1,13 @@
 #!/system/bin/sh
 
-# USB online hazır olana kadar bekle
 while [ ! -f /sys/class/power_supply/usb/online ]; do
     sleep 0.1
 done
 
-# Trigger'ı battery-charging olarak ayarla (sadece bir kere)
 chmod 0666 /sys/class/leds/green/trigger
 echo battery-charging > /sys/class/leds/green/trigger
 chmod 0444 /sys/class/leds/green/trigger
 
-# Sonsuz döngü - sadece brightness kontrol et
 while true; do
     if [ $(cat /sys/class/power_supply/usb/online 2>/dev/null) -eq 1 ]; then
         # Kablo takılı -> trigger zaten battery-charging olduğu için LED yanar

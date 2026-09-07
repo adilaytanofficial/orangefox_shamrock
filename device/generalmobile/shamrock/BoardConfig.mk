@@ -1,4 +1,4 @@
-LOCAL_PATH := device/google/shamrock
+LOCAL_PATH := device/generalmobile/shamrock
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8952
@@ -34,7 +34,7 @@ TW_INCLUDE_CRYPTO_FKEY := true
 TARGET_HW_DISK_ENCRYPTION := false
 TW_LEGACY_DECRYPT := true
 
-# Kernel & Boot Image Parametreleri
+# Kernel & Boot Image Parameters
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
@@ -44,14 +44,12 @@ BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk buildvariant=userdebug
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 TW_ALWAYS_PERMISSIVE := true
-#BOARD_KERNEL_CMDLINE += androidboot.reboot_reason=recovery
-#BOARD_KERNEL_CMDLINE += androidboot.mode=recovery
 
 # Prebuilt Kernel & DTB
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
 BOARD_KERNEL_SEPARATED_DT := false
 
-# Mkbootimg Argümanları
+# Mkbootimg Args
 BOARD_MKBOOTIMG_ARGS := --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
@@ -61,7 +59,7 @@ BOARD_INCLUDE_DTB_IN_BOOTIMG := false
 TARGET_NEEDS_DTB := false
 BOARD_PREBUILT_DTBIMAGE := $(LOCAL_PATH)/prebuilt/dtb.img
 
-# Sideload ve USB Bağlantı Tespiti (Qualcomm MSM8952 Fix)
+# Sideload and USB Connection
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun%d/file"
 TW_HAS_MTP := true
 
@@ -106,7 +104,7 @@ PERSISTENT_ADB := true
 TARGET_USES_LOGD := false
 BOARD_AVB_ENABLE := false
 
-# Root ADB Ayarları (ADB'nin offline düşmesini engeller)
+# Root ADB Setings
 ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.adb.secure=0 \
     ro.secure=0 \
@@ -117,7 +115,6 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 FOX_ARCH := arm64
 PLATFORM_SECURITY_PATCH := 2021-06-05
 PLATFORM_VERSION := 10.0.0
-
 OF_DISABLE_MIUI_SPECIFIC_SUPPORTS := 1
 OF_QUICK_BACKUP_LIST := /boot;/data;/system;/vendor;
 
@@ -126,42 +123,24 @@ TARGET_RECOVERY_DEVICE_DIRS += device/google/shamrock
 TARGET_PROP := device/google/shamrock/prop.default
 
 BUILD_WITH_COLORS := true
-
-# Qualcomm legacy cihazlar için FunctionFS ve USB Çakışma Önleme
 TARGET_RECOVERY_UNKNOWN_PARENTS := true
-TW_EXCLUDE_DEFAULTUSB_INIT := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-
-# ADB / USB FunctionFS tanımları
 GLOBAL_CFLAGS += -DALLOW_DISABLE_SELINUX=1
-
 PRODUCT_BUILD_LICENSE_METADATA := false
-
-# ====================================================================
-# Reboot & Recovery Action Fix (Qualcomm MSM8952 / Shamrock)
-# ====================================================================
 BOARD_RECOVERY_BLDRMSG_OFFSET := 0
 TARGET_RECOVERY_QCOM_RTC_FIX := true
-
-# Reboot Butonları Düzeltmesi (Bootloader Menüsünü Aktif Eder)
 TW_NO_REBOOT_BOOTLOADER := false
 TW_NO_REBOOT_RECOVERY := false
 TW_HAS_DOWNLOAD_MODE := false
-
-# Executable, Shell & Resetprop Yetki Tanımları
 TW_INCLUDE_LIBRESETPROP := true
 TW_USE_TOOLBOX := true
 RECOVERY_BINARY_SOURCE := 67
-
-# Storage Configuration
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
-
-# Zip / Binary ve Bootloader kütüphaneleri
 TARGET_RECOVERY_DEVICE_MODULES += timestamp
 TARGET_RECOVERY_UPDATER_LIBS += libcutils libselinux libbootloader_message
 
-# OrangeFox / TWRP /misc Otomatik Temizleme
+# OrangeFox / TWRP /misc
 TW_CLEAN_BOOTLOADER_MESSAGE := true
 TARGET_RECOVERY_DEVICE_HAVE_MISC_PARTITION := true
 TW_TARGET_MISC_PATH := /dev/block/bootdevice/by-name/misc
@@ -176,7 +155,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     lights.msm8952 \
     android.hardware.light@2.0-service
 
-# OrangeFox SAR ve Partition Tanımları (EKLENMELİ)
 TW_CUSTOM_BATTERY_PATH := "/sys/class/power_supply/battery"
 CUSTOM_SYSFS_LEDS_PATH := "/sys/class/leds/green"
 OF_USE_GREEN_LED := 0

@@ -1,0 +1,18 @@
+on boot
+    setprop sys.usb.configfs 0
+
+on property:sys.usb.config=mtp,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions mtp,adb
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+
+on property:sys.usb.config=sideload
+    stop adbd
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state sideload
+    setprop ro.adb.secure 0
+    setprop service.adb.root 1
+    start adbd

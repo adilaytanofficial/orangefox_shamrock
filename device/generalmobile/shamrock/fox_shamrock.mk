@@ -1,13 +1,13 @@
-LOCAL_PATH := device/google/shamrock
+LOCAL_PATH := device/generalmobile/shamrock
 
-$(call inherit-product, device/google/shamrock/device.mk)
+$(call inherit-product, device/generalmobile/shamrock/device.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 PRODUCT_DEVICE := shamrock
 PRODUCT_NAME := fox_shamrock
-PRODUCT_BRAND := Google
+PRODUCT_BRAND := GeneralMobile
 PRODUCT_MODEL := GM 5 Plus
-PRODUCT_MANUFACTURER := Google
+PRODUCT_MANUFACTURER := General Mobile
 
 # TWRP Settings
 TW_INCLUDE_CRYPTO := false
