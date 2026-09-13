@@ -1,6 +1,6 @@
 # 🔥 OrangeFox Recovery for Shamrock
 
-A custom recovery project for Google Shamrock (GM5 Plus) based on OrangeFox.
+A custom recovery project for General Mobile 5 Plus(shamrock) based on OrangeFox.
 
 ![Android](https://img.shields.io/badge/Android-10%2B-brightgreen)
 ![Architecture](https://img.shields.io/badge/Architecture-arm64-purple)
