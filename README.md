@@ -12,11 +12,17 @@ A custom recovery project for Google Shamrock (GM5 Plus) based on OrangeFox.
 - Built for Google Shamrock (GM5 Plus)
 - Based on the latest OrangeFox sources
 
-## ☕ Support the Project
+## 📸 Screenshots
 
-If you find this project useful and want to support future development, you can consider supporting me through one of the following platforms. Your support helps keep this project alive and allows for more updates.
+<details>
+<summary>Click to view screenshots</summary>
 
-[![Sponsor on GitHub](https://img.shields.io/badge/♥%20Sponsor%20on%20GitHub-24292f?style=for-the-badge&logo=github)](https://github.com/sponsors/AdilAytan)
-[![Buy Me a Coffee](https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/AdilAytan)
+| Files | Backup | Wipe | Menu |
+|:---------:|:----:|:-------:|:-------:|
+| ![](screenshots/files.png) | ![](screenshots/backup.png) | ![](screenshots/wipe.png) | ![](screenshots/menu.png)
 
-Thank you for your support! 🙏
+| Magisk Manager | App Manager | Reboot | Lock Screen |
+|:------:|:--------:|:-----:|:-----:|
+| ![](screenshots/magisk_manager.png) | ![](screenshots/app_manager.png) | ![](screenshots/reboot_screen.png) | ![](screenshots/lock_screen.png) |
+
+</details>
