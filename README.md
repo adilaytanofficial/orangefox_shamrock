@@ -65,7 +65,8 @@ Download and run the initialization script:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/adilaytanofficial/orangefox_shamrock/12.1/initialize.sh -o initialize.sh
-sudo bash initialize.sh
+chmod +x initialize.sh
+sudo ./initialize.sh
 ```
 
 The script will initialize the required build environment and dependencies.
